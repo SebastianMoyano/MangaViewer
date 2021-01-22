@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ site_title }}</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/materialize.min.css') }}" type="text/css" rel="stylesheet"
+          media="screen,projection"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+<!--NAVIGATION BAR-->
+<nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="" class="brand-logo">{{ site_title }}</a>
+
+    </div>
+</nav>
+
+
+<!--CONTAINER-->
+<div class="container">
+    <h1 class="header center orange-text">{{ header }}</h1>
+    <h4 class="center light-blue-text"></h4>
+    <a href="{{ linkHome }}" class="btn btn-primary">Home</a>
+
+    <ul class="collection with-header">
+        <li class="collection-header"><h4><b>{{ list_header }}</b></h4></li>
+{#    loop through galaxies and render them in list#}
+        {% for galaxy in galaxies %}
+        {% if galaxy[1] == "" %}
+        <form action="/usuario" method="post">
+            <input type="hidden" name="Link" value="{{ galaxy[0] }}">
+            <button type="submit" class="btn btn-success">
+                {{ galaxy[0] }}
+              </button>
+        </form>
+        {% else %}
+        <form action="/usuario" method="post">
+            <input type="hidden" name="Link" value="{{ galaxy[0] }}">
+            <button type="submit" class="btn btn-danger">
+                {{ galaxy[0] }}
+            </button>
+        </form>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

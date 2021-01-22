@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ site_title }}</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/materialize.min.css') }}" type="text/css" rel="stylesheet"
+          media="screen,projection"/>
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+<!--CONTAINER-->
+
+<div class="container">
+    <h1 class="header center orange-text">{{ header }}</h1>
+    <h4 class="center light-blue-text">{{ sub_header }}</h4>
+        <!--              ANTERIOR Y POSTERIOR                 -->
+        <div class="container">
+            <div class="row">
+                {% if prevchap != '' %}
+                <form action="/usuario" method="post">
+                    <input type="hidden" name="Link" value="{{ prevchap }}">
+                    <button type="submit" class="btn btn-danger col-xs-6">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true">
+                    </button>
+                </form>
+                {% endif %}
+
+                {% if nextchap != '' %}
+                <form action="/usuario" method="post">
+                    <input type="hidden" name="Link" value="{{ nextchap }}">
+                    <button type="submit" class="btn btn-danger col-xs-6">
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true">
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <!--              ANTERIOR Y POSTERIOR                 -->
+
+    <p>Here are our galaxies</p>
+    <ul class="collection with-header">
+        <li class="collection-header"><h4><b>{{ list_header }}</b></h4></li>
+{#    loop through galaxies and render them in list#}
+        {% for galaxy in galaxies %}
+            <li class="collection-item"><img src="{{ galaxy }}" alt="No IMG"></img></li>
+        {% endfor %}
+    </ul>
+    <a href="{{ linkHome }}" class="btn btn-primary">Home</a>
+
+        <!--              ANTERIOR Y POSTERIOR                 -->
+        <div class="container">
+            <div class="row">
+                {% if prevchap != '' %}
+                <form action="/usuario" method="post">
+                    <input type="hidden" name="Link" value="{{ prevchap }}">
+                    <button type="submit" class="btn btn-danger col-xs-6">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true">
+                    </button>
+                </form>
+                {% endif %}
+
+                {% if nextchap != '' %}
+                <form action="/usuario" method="post">
+                    <input type="hidden" name="Link" value="{{ nextchap }}">
+                    <button type="submit" class="btn btn-danger col-xs-6">
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true">
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <!--              ANTERIOR Y POSTERIOR                 -->
+        
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
