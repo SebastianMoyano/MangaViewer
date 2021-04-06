@@ -31,6 +31,9 @@ class MangaTodo:
         print("esto es test",self.__TodasClases[self.valor])
         return self.__TodasClases[self.valor].getAllChapters()
 
+    def ConseguirCOVER(self,):
+        return self.__TodasClases[self.valor].ConseguirCOVER()
+
     def getChapter(self,num):
         return self.__TodasClases[self.valor].getChapter(num)
 
