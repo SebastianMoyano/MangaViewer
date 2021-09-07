@@ -7,8 +7,9 @@ import TodoMangas
 from flask import Flask,render_template,request
 import os
 import json
-
+import requests
 import pickle
+import webbrowser
 
 app = Flask(__name__)
 path = os.path.dirname(os.path.realpath(__file__))
@@ -19,8 +20,12 @@ def index():
     data = check()
     new  = []
     for x in data.keys():
-
-        new.append([MangaT.recontruccion(x),x,data[x][0]])
+        print(data[x][0])
+        r = requests.get("http:"+data[x][0], allow_redirects=True)
+        if not os.path.exists(os.path.join(path,"static/"+x+".jpeg")):
+            with open(os.path.join(path,"static/"+x+".jpeg"), 'wb') as f:
+                f.write(r.content)
+        new.append([MangaT.recontruccion(x),x,"/static/"+x+".jpeg"])
     
     return render_template('index.html',header='Amazing Universe', sub_header='Our universe is quite amazing', list_header="Galaxies!",
                     galaxies=new, site_title="MangaSeba")
@@ -34,7 +39,7 @@ def delete():
     new  = []
     for x in data.keys():
 
-        new.append([MangaT.recontruccion(x),x,data[x][0]])
+        new.append([MangaT.recontruccion(x),x,"/static/"+x+".jpeg"])
     
     return render_template('index.html',header='Amazing Universe', sub_header='Our universe is quite amazing', list_header="Galaxies!",
                     galaxies=new, site_title="MangaSeba")
@@ -131,4 +136,6 @@ def check():
 
 
 if __name__ == '__main__':
+    webbrowser.open_new('http://0.0.0.0:5000/')
     app.run(host= '0.0.0.0',debug=True)
+    
