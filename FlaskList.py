@@ -10,37 +10,63 @@ import json
 import requests
 import pickle
 import webbrowser
+import sys
+import shutil
 
 app = Flask(__name__)
 path = os.path.dirname(os.path.realpath(__file__))
 MangaT = TodoMangas.MangaTodo()
 
+if hasattr(sys, "frozen"):
+    main_dir = os.path.dirname(sys.executable)
+    full_real_path = os.path.dirname(os.path.realpath(sys.executable))
+else:
+    script_dir = os.path.dirname(__file__)
+    main_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+    full_real_path = os.path.dirname(os.path.realpath(sys.argv[0]))
+
+def eliminar():
+    folder = os.path.join(full_real_path,"static","tempImages")
+    
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
 @app.route('/')
 def index():
+    print("aca")
     data = check()
+    print("aca")
     new  = []
     for x in data.keys():
         print(data[x][0])
-        r = requests.get("http:"+data[x][0], allow_redirects=True)
+        
         if not os.path.exists(os.path.join(path,"static/"+x+".jpeg")):
+            r = requests.get("http:"+data[x][0], allow_redirects=True)
             with open(os.path.join(path,"static/"+x+".jpeg"), 'wb') as f:
                 f.write(r.content)
         new.append([MangaT.recontruccion(x),x,"/static/"+x+".jpeg"])
-    
+    eliminar()
     return render_template('index.html',header='Amazing Universe', sub_header='Our universe is quite amazing', list_header="Galaxies!",
                     galaxies=new, site_title="MangaSeba")
 
 @app.route('/',methods=['POST'])
 def delete():
     data = check()
+    
     nombreUser = request.form['delete']
     data.pop(nombreUser, None)
     add(data)
     new  = []
     for x in data.keys():
-
         new.append([MangaT.recontruccion(x),x,"/static/"+x+".jpeg"])
-    
+    eliminar()
     return render_template('index.html',header='Amazing Universe', sub_header='Our universe is quite amazing', list_header="Galaxies!",
                     galaxies=new, site_title="MangaSeba")
 
